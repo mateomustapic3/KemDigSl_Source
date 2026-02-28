@@ -1,0 +1,40 @@
+﻿@startuml
+start
+
+skinparam activityBorderThickness 1
+skinparam activityFontSize 15
+skinparam activityDiamondFontSize 15
+skinparam activityArrowThickness 1.5
+skinparam activityShadowing false
+
+:Pokretanje aplikacije;
+:Inicijalizacija sustava\n(tema, logiranje);
+:Učitavanje slike;
+
+if (Učitavanje uspješno?) then (<size:14><b>DA</b></size>)
+  :Provjera formata slike;
+  if (Format podržan?) then (<size:14><b>DA</b></size>)
+    :Odabir modula obrade;
+    :Postavljanje parametara;
+    :Provjera dostupnosti\nmodela i alata;
+    if (Resursi dostupni?) then (<size:14><b>DA</b></size>)
+      :Pokretanje obrade\n(Python / EXE);
+      :Učitavanje rezultata\niz TEMP direktorija;
+      if (Obrada uspješna?) then (<size:14><b>DA</b></size>)
+        :Prikaz rezultata\nu GUI-u;
+        :Spremanje izlaza\n(opcionalno);
+      else (<size:14><b>NE</b></size>)
+        :Zapis u log +\nporuka o grešci;
+      endif
+    else (<size:14><b>NE</b></size>)
+      :Poruka o nedostajućim\nmodelima ili alatima;
+    endif
+  else (<size:14><b>NE</b></size>)
+    :Poruka o nepodržanom\nformatu;
+  endif
+else (<size:14><b>NE</b></size>)
+  :Poruka o grešci\n pri učitavanju;
+endif
+
+stop
+@enduml

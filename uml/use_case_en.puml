@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+actor "User" as User
+
+rectangle "KemDigSl" {
+  usecase "Load image" as UC1
+  usecase "Select module" as UC2
+  usecase "Set parameters" as UC3
+  usecase "Start processing" as UC4
+  usecase "Review result" as UC5
+  usecase "Save output" as UC6
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+@enduml

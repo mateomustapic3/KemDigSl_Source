@@ -1,0 +1,41 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+dist/
+artifacts/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.csproj.user
+
+# Temp / generated
+tmp/
+tmp_test/
+**/outputs/
+**/runs/
+
+# Python cache/env
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache/
+**/venv/
+**/.venv/
+**/env/
+
+# Local runtimes / duplicate copy
+PythonRuntime/
+a/
+python/gfpgan/.git/
+
+# Large model/binary assets (ne idu u source repo)
+**/*.pth
+**/*.pt
+**/*.ckpt
+**/*.onnx
+**/*.safetensors
+**/*.bin
+**/*.param

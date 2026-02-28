@@ -1,0 +1,26 @@
+@startuml
+top to bottom direction
+skinparam componentStyle rectangle
+
+package "KemDigSl" {
+  [WinForms UI] as UI
+  [Main menu] as Menu
+  [Forms 1-11] as Forms
+  [Helper classes] as Paths
+  [CrashLogger] as Logger
+}
+
+package "Python and tools" {
+  [PythonRuntime] as Py
+  [python/*.py] as PyScripts
+  [ESRGAN (ncnn-vulkan)] as ESRGAN
+}
+
+UI --> Menu
+Menu --> Forms
+Forms --> Paths
+Forms --> Py
+Forms --> PyScripts
+Forms --> ESRGAN
+Forms --> Logger
+@enduml

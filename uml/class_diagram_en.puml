@@ -1,0 +1,58 @@
+@startuml
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+class Program {
+  +Main()
+}
+
+class MainMenuForm {
+  -currentChild : Form
+  +TryLoadChild()
+  +LoadChild()
+}
+
+class "Forms (1-11)" as Forms
+
+note right of Forms
+  Form1, Form2, Form3, Form4
+  Form5, Form6, Form7, Form8
+  Form9, Form10, Form11
+end note
+
+class AppPaths {
+  +FindAppRoot()
+  +FindPythonExe()
+  +ResolveFile()
+  +ResolveDirectory()
+}
+
+class CrashLogger {
+  +Init()
+  +Handle()
+  +Log()
+}
+
+class Theme {
+  +StyleButton()
+  +StyleLabel()
+  +StyleComboBox()
+  +StyleTrackBar()
+ }
+
+class Process {
+  +Start()
+  +WaitForExit()
+ }
+
+Program --> MainMenuForm
+MainMenuForm --> Forms
+
+Forms ..> AppPaths
+Forms ..> Theme
+Forms ..> Process
+
+Program ..> CrashLogger
+MainMenuForm ..> CrashLogger
+@enduml

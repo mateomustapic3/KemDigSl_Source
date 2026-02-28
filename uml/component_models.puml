@@ -1,0 +1,26 @@
+@startuml
+top to bottom direction
+skinparam componentStyle rectangle
+
+package "Python i alati" {
+  [python/*.py] as PyScripts
+}
+
+package "Modeli" {
+  [GFPGAN] as GFPGAN
+  [CodeFormer] as CodeFormer
+  [DDColor] as DDColor
+  [AdaIN] as AdaIN
+  [YOLOv8] as YOLO
+  [AnimeGANv2] as AnimeGAN
+  [LaMa] as LaMa
+}
+
+PyScripts --> GFPGAN
+PyScripts --> CodeFormer
+PyScripts --> DDColor
+PyScripts --> AdaIN
+PyScripts --> YOLO
+PyScripts --> AnimeGAN
+PyScripts --> LaMa
+@enduml

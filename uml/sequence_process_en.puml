@@ -1,0 +1,15 @@
+@startuml
+actor User
+participant "WinForms GUI" as GUI
+participant "Form" as Form
+participant "Python/Exe" as Proc
+participant "Temp files" as Temp
+
+User -> GUI: Load image and select module
+GUI -> Form: Forward input and parameters
+Form -> Proc: Run script or exe
+Proc -> Temp: Save output
+Proc --> Form: Return status
+Form -> GUI: Load output and display
+GUI --> User: Review and save
+@enduml

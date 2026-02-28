@@ -1,0 +1,40 @@
+@startuml
+start
+
+skinparam activityBorderThickness 1
+skinparam activityFontSize 15
+skinparam activityDiamondFontSize 15
+skinparam activityArrowThickness 1.5
+skinparam activityShadowing false
+
+:Application startup;
+:System initialization\n(theme, logging);
+:Load image;
+
+if (Image loaded successfully?) then (<size:14><b>YES</b></size>)
+  :Check image format;
+  if (Format supported?) then (<size:14><b>YES</b></size>)
+    :Select processing module;
+    :Set parameters;
+    :Check availability of\nmodels and tools;
+    if (Resources available?) then (<size:14><b>YES</b></size>)
+      :Start processing\n(Python / EXE);
+      :Load results\nfrom TEMP directory;
+      if (Processing successful?) then (<size:14><b>YES</b></size>)
+        :Display results\nin GUI;
+        :Save output\n(optional);
+      else (<size:14><b>NO</b></size>)
+        :Log entry +\nerror message;
+      endif
+    else (<size:14><b>NO</b></size>)
+      :Message about missing\nmodels or tools;
+    endif
+  else (<size:14><b>NO</b></size>)
+    :Message about unsupported\nformat;
+  endif
+else (<size:14><b>NO</b></size>)
+  :Error message\n during loading;
+endif
+
+stop
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+actor Korisnik
+participant "WinForms GUI" as GUI
+participant "Forma" as Form
+participant "Python/Exe" as Proc
+participant "Temp datoteke" as Temp
+
+Korisnik -> GUI: Učitaj sliku i odaberi modul
+GUI -> Form: Proslijedi ulaz i parametre
+Form -> Proc: Pokreni skriptu ili exe
+Proc -> Temp: Snimi izlaz
+Proc --> Form: Povratni status
+Form -> GUI: Učitaj izlaz i prikaži
+GUI --> Korisnik: Pregled i spremanje
+@enduml
