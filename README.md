@@ -104,8 +104,3 @@ Preporuceno:
 - instalacijski repo: gotove build/installer artefakte
 
 Na taj nacin source ostaje cist, manji i laksi za odrzavanje, a distribucija je odvojena.
-
-## Licenciranje i trece strane
-
-Projekt ukljucuje vendorizirane komponente trecih strana (npr. GFPGAN, CodeFormer, LaMa, AdaIN, AnimeGANv2, DDColor).  
-Svaki podprojekt moze imati vlastitu licencu i uslove koristenja, pa provjeri licence u njihovim podfolderima prije distribucije.
