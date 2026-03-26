@@ -10,7 +10,9 @@ namespace Project
         private const int MinContentWidth = 320;
         private const int MaxContentWidth = 1100;
         private const int SupportGap = 24;
+        private static readonly TextFormatFlags MultilineTextFlags = TextFormatFlags.WordBreak;
         private bool supportStacked;
+        private bool layoutUpdatePending;
 
         public WelcomeForm()
         {
@@ -35,15 +37,27 @@ namespace Project
             }
 
             UpdateLayout();
-            Resize += (_, __) => UpdateLayout();
+            panelRoot.Resize += (_, __) => QueueLayoutUpdate();
+            Resize += (_, __) => QueueLayoutUpdate();
+            FontChanged += (_, __) => QueueLayoutUpdate();
+            Shown += (_, __) => QueueLayoutUpdate();
+            VisibleChanged += (_, __) =>
+            {
+                if (Visible && IsHandleCreated)
+                    QueueLayoutUpdate();
+            };
         }
 
         private void UpdateLayout()
         {
-            int available = Math.Max(MinContentWidth, ClientSize.Width - (SidePadding * 2));
+            Size viewport = panelRoot.ClientSize;
+            if (viewport.Width <= 0 || viewport.Height <= 0)
+                return;
+
+            int available = Math.Max(MinContentWidth, viewport.Width - (SidePadding * 2));
             int contentWidth = Math.Min(MaxContentWidth, available);
 
-            lblWelcome.MaximumSize = new Size(contentWidth, 0);
+            ApplyLabelLayout(lblWelcome, contentWidth);
 
             bool stackSupport = contentWidth < 650;
             SetSupportLayout(stackSupport);
@@ -58,16 +72,48 @@ namespace Project
 
             int logoBlock = pictureMainLogo.Visible ? pictureMainLogo.Width + SupportGap : 0;
             int supportWidth = stackSupport ? contentWidth : Math.Max(160, contentWidth - logoBlock);
-            lblSupport.MaximumSize = new Size(supportWidth, 0);
+            ApplyLabelLayout(lblSupport, supportWidth);
 
             flowContent.MaximumSize = new Size(contentWidth, 0);
+            tableSupport.MaximumSize = new Size(contentWidth, 0);
+            tableSupport.PerformLayout();
             flowContent.PerformLayout();
 
-            int x = (ClientSize.Width - flowContent.Width) / 2;
+            panelRoot.AutoScrollMinSize = new Size(0, flowContent.Height + (SidePadding * 2));
+
+            int x = (viewport.Width - flowContent.Width) / 2;
             x = Math.Max(SidePadding, x);
-            int y = (ClientSize.Height - flowContent.Height) / 2;
-            y = Math.Max(SidePadding, y);
+            int y = flowContent.Height + (SidePadding * 2) <= viewport.Height
+                ? Math.Max(SidePadding, (viewport.Height - flowContent.Height) / 2)
+                : SidePadding;
             flowContent.Location = new Point(x, y);
+        }
+
+        private void QueueLayoutUpdate()
+        {
+            if (!IsHandleCreated || layoutUpdatePending)
+                return;
+
+            layoutUpdatePending = true;
+            BeginInvoke((Action)(() =>
+            {
+                layoutUpdatePending = false;
+                UpdateLayout();
+            }));
+        }
+
+        private static void ApplyLabelLayout(Label label, int width)
+        {
+            width = Math.Max(1, width);
+            Size measured = TextRenderer.MeasureText(
+                label.Text,
+                label.Font,
+                new Size(width, int.MaxValue),
+                MultilineTextFlags);
+
+            label.MaximumSize = new Size(width, 0);
+            label.MinimumSize = Size.Empty;
+            label.Size = new Size(width, Math.Max(label.Font.Height + 4, measured.Height));
         }
 
         private void SetSupportLayout(bool stacked)

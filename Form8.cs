@@ -75,8 +75,7 @@ namespace Project
             }
 
             string scriptDir = Path.GetDirectoryName(scriptPath)!;
-            string outputDir = Path.Combine(scriptDir, "Outputs");
-            Directory.CreateDirectory(outputDir);
+            string outputDir = AppPaths.GetWritableWorkDirectory("Cartoonify", "Outputs");
             outputImagePath = Path.Combine(outputDir, $"cartoonified_{DateTime.Now:yyyyMMdd_HHmmss}.png");
 
             double blend = trackBlend.Value / 100.0;

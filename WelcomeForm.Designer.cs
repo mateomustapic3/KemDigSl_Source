@@ -38,6 +38,7 @@ namespace Project
             // 
             // panelRoot
             // 
+            panelRoot.AutoScroll = true;
             panelRoot.Controls.Add(flowContent);
             panelRoot.Dock = DockStyle.Fill;
             panelRoot.Name = "panelRoot";
@@ -58,7 +59,6 @@ namespace Project
             // 
             // lblWelcome
             // 
-            lblWelcome.AutoSize = true;
             lblWelcome.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
             lblWelcome.ForeColor = Color.White;
             lblWelcome.Margin = new Padding(0, 0, 0, 28);
@@ -91,18 +91,17 @@ namespace Project
             // 
             // lblSupport
             // 
-            lblSupport.AutoSize = true;
-            lblSupport.Dock = DockStyle.Fill;
             lblSupport.Font = new Font("Segoe UI", 11F);
             lblSupport.ForeColor = Color.White;
+            lblSupport.Margin = new Padding(0);
             lblSupport.Name = "lblSupport";
             lblSupport.Text = "Ovaj rad nastao je uz potporu projekta Kulturna slika Dubrovnika kroz transformacije tiskarske baštine od prvih tiskanih izdanja do digitalnih formata (KulTisk), koji se provodi na Sveučilištu u Dubrovniku i financira sredstvima fonda NextGenerationEU.";
             lblSupport.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // WelcomeForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(30, 30, 30);
             ClientSize = new Size(900, 600);
             Controls.Add(panelRoot);

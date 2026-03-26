@@ -100,7 +100,7 @@ namespace Project
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(0, 0);
             panelTop.Name = "panelTop";
-            panelTop.Size = new Size(1623, 70);
+            panelTop.Size = new Size(1623, 108);
             panelTop.TabIndex = 2;
             // 
             // lblTitle
@@ -297,7 +297,7 @@ namespace Project
             panelCenter.Controls.Add(table);
             panelCenter.Controls.Add(flowStyles);
             panelCenter.Dock = DockStyle.Fill;
-            panelCenter.Location = new Point(0, 70);
+            panelCenter.Location = new Point(0, 108);
             panelCenter.Name = "panelCenter";
             panelCenter.Size = new Size(1623, 570);
             panelCenter.TabIndex = 0;

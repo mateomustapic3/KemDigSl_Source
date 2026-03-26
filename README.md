@@ -1,44 +1,37 @@
-# KemDigSl (WindowsFormsApp)
+# KemDigSl
 
-KemDigSl je desktop aplikacija za lokalnu AI obradu slika na Windows platformi.  
-Grafičko sučelje izrađeno je u C#/.NET WinForms okruženju, dok se obrada pokreće putem Python skripti i vanjskih alata.
+KemDigSl je Windows desktop aplikacija za lokalnu AI obradu i transformaciju slika. Korisnicko sucelje razvijeno je u C#/.NET WinForms okruzenju, dok se obrada izvrsava putem Python skripti, modela strojnog ucenja i vanjskih alata.
 
-Ovaj repozitorij namijenjen je prvenstveno razvoju i radu sa izvornim kodom.
+Ovaj repozitorij sluzi kao izvorni razvojni repozitorij. Za distribucijsku verziju aplikacije i gotove instalacijske artefakte koristi se zaseban instalacijski repozitorij.
 
----
+## Repozitoriji
 
-## Instalacijski repozitorij
+- Source code: <https://github.com/mateomustapic3/KemDigSl_Source>
+- Installer/distribucija: <https://github.com/mateomustapic3/KemDigSl>
 
-Za gotovu instalacijsku verziju aplikacije koristi sljedeći repozitorij:  
-<https://github.com/mateomustapic3/KemDigSl>
+## Glavne funkcionalnosti
 
----
-
-## Funkcionalnosti aplikacije
-
-Glavni moduli (po formama):
+Glavni moduli aplikacije organizirani su po formama:
 
 | Forma | Modul | Opis |
 |---|---|---|
-| Form1 | Basic Transforms | Osnovne transformacije slike (npr. grayscale, blur, rotacija, kontrast, zasićenje). |
-| Form2 | ESRGAN | Povećanje/smanjenje rezolucije slike (x2/x4/x8/x16) putem `realesrgan-ncnn-vulkan.exe`. |
-| Form3 | GFPGAN | Obnova lica na degradiranim fotografijama. |
-| Form4 | CodeFormer | Uklanjanje šuma i restauracija lica i detalja uz podešavanje fidelity parametra. |
-| Form5 | DDColor | Automatska kolorizacija crno-bijelih slika. |
-| Form6 | AdaIN Style Transfer | Prijenos stila sa referentne slike na ulaznu sliku. |
-| Form7 | YOLOv8 Detection | Detekcija objekata i prikaz bounding box rezultata. |
-| Form8 | Cartoonify | Stilizacija slike u anime/crtani stil (AnimeGANv2). |
-| Form9 | Film Restore | Uklanjanje grain i scratch artefakata (LaMa/OpenCV fallback). |
-| Form10 | Object Removal | Uklanjanje objekata pomoću maske (LaMa/OpenCV fallback). |
-| Form11 | AutoFix | Poluautomatizirani pipeline koji kombinira više modula. |
-
----
+| `Form1` | Basic Transforms | Osnovne transformacije slike, ukljucujuci grayscale, blur, rotaciju, kontrast i zasicenje. |
+| `Form2` | ESRGAN | Povecanje ili smanjenje rezolucije slike pomocu ESRGAN alata. |
+| `Form3` | GFPGAN | Obnova lica na degradiranim ili starim fotografijama. |
+| `Form4` | CodeFormer | Uklanjanje suma i restauracija lica uz podesavanje fidelity parametra. |
+| `Form5` | DDColor | Automatska kolorizacija crno-bijelih slika. |
+| `Form6` | AdaIN Style Transfer | Prijenos stila s referentne slike na ulaznu sliku. |
+| `Form7` | YOLOv8 Detection | Detekcija objekata i prikaz bounding box rezultata. |
+| `Form8` | Cartoonify | Stilizacija slike u anime ili cartoon stil pomocu AnimeGANv2 modela. |
+| `Form9` | Film Restore | Uklanjanje grain i scratch artefakata uz LaMa/OpenCV fallback. |
+| `Form10` | Object Removal | Uklanjanje objekata pomocu maske uz LaMa/OpenCV fallback. |
+| `Form11` | AutoFix | Poluautomatizirani pipeline koji kombinira vise modula. |
 
 ## Tehnologije
 
 - .NET 8 (`net8.0-windows`)
 - Windows Forms
-- Python skripte za AI obradu
+- Python runtime i pomocne skripte
 - ESRGAN NCNN Vulkan
 - GFPGAN
 - CodeFormer
@@ -47,48 +40,43 @@ Glavni moduli (po formama):
 - YOLOv8
 - LaMa
 
----
+## Arhitektura
 
-## Arhitektura (ukratko)
-
-- UI sloj: WinForms forme i navigacija putem `MainMenuForm`
-- Orkestracija: C# kod priprema ulaze, pokreće procese i učitava izlaze
-- Obrada: Python skripte i/ili nativni alati (npr. ESRGAN izvršna datoteka)
-- Upravljanje resursima: `AppPaths.cs` pronalazi root direktorij aplikacije, Python runtime i potrebne mape
-
----
+- UI sloj: WinForms forme i navigacija kroz `MainMenuForm`
+- Orkestracija: C# kod priprema ulaze, pokrece procese i ucitava rezultate
+- Obrada: Python skripte i/ili nativni alati za pojedine AI module
+- Upravljanje putanjama i resursima: `AppPaths.cs` pronalazi root aplikacije, Python runtime i povezane foldere
 
 ## Struktura projekta
 
-Najvažniji dijelovi:
+Najvazniji dijelovi repozitorija:
 
-- `Project.csproj` — .NET projekt
-- `Program.cs` — ulazna točka aplikacije
-- `MainMenuForm.cs` — glavni izbornik i pokretanje modula
-- `Form1.cs` ... `Form11.cs` — funkcionalni moduli
-- `AppPaths.cs` — pronalaženje root putanja i python.exe
-- `CrashLogger.cs` — zapisivanje neočekivanih pogrešaka
-- `python/` — pomoćne skripte i GFPGAN wrapper
-- `ESRGAN/`, `CODEFORMER/`, `DDCOLOR/`, `GFPGAN/`, `DETECTION/`, `STYLE_TRANSFER/`, `BCKG_REMOVAL/`, `CARTOONIFY/` — modeli, skripte i resursi po modulima
-- `tools/package_portable.ps1` — skripta za izradu portable paketa
-
----
+- `Project.csproj` - .NET projekt
+- `Project.sln` - solution datoteka
+- `Program.cs` - ulazna tocka aplikacije
+- `MainMenuForm.cs` - glavni izbornik i ucitavanje modula
+- `WelcomeForm.cs` - pocetni prikaz aplikacije
+- `Form1.cs` do `Form11.cs` - funkcionalni moduli
+- `AppPaths.cs` - rezolucija putanja do runtimea i asseta
+- `CrashLogger.cs` - zapisivanje neocekivanih gresaka
+- `python/` - pomocne Python skripte i wrapperi
+- `ESRGAN/`, `CODEFORMER/`, `DDCOLOR/`, `GFPGAN/`, `DETECTION/`, `STYLE_TRANSFER/`, `BCKG_REMOVAL/`, `CARTOONIFY/` - modeli, skripte i resursi po modulima
+- `KemDigSlInstaller.Quick.iss` - Inno Setup skripta za quick installer
+- `tools/build_quick_installer.ps1` - build quick installera
+- `tools/prepare_quick_installer_payload.ps1` - priprema payloada za quick installer
 
 ## Pokretanje iz izvornog koda
 
-Napomena: ovaj repozitorij s izvornim kodom može ne sadržavati puni runtime i modele.  
-Ako želiš potpuno funkcionalnu verziju "spremnu za korištenje", koristi instalacijski repozitorij:  
-<https://github.com/mateomustapic3/KemDigSl>
+Preporuceno razvojno okruzenje:
 
-Minimalni koraci za razvoj:
-
-1. Instaliraj .NET 8 SDK i Visual Studio 2022 (ili noviji) s WinForms podrškom.
-2. Otvori `Project.sln`.
+1. Instalirati .NET 8 SDK
+2. Instalirati Visual Studio 2022 ili noviji s WinForms podrskom
+3. Otvoriti `Project.sln`
 
 Build:
 
 ```powershell
-dotnet build .\Project.csproj -c Debug
+dotnet build .\Project.sln -c Debug
 ```
 
 Pokretanje:
@@ -97,27 +85,23 @@ Pokretanje:
 dotnet run --project .\Project.csproj
 ```
 
-Ako nedostaju modeli ili runtime mape, pojedini moduli neće raditi dok se ne dodaju potrebni resursi.
+Napomena: pojedini moduli ovise o modelima, Python runtimeu i dodatnim resursima. Ako dio asseta nedostaje, odgovarajuci modul nece biti funkcionalan dok se resursi ne dodaju.
 
----
+## Build i distribucija
 
-## Build i portable paket
-
-Izrada portable paketa (Release, win-x64):
+Brzi installer:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\package_portable.ps1 -Configuration Release -Runtime win-x64
+powershell -ExecutionPolicy Bypass -File .\tools\build_quick_installer.ps1 -Configuration Release -Runtime win-x64 -SelfContained
 ```
 
-Skripta generira izlaz u direktoriju `dist/portable/app`.
+Glavni izlazni artefakti generiraju se u `dist/installer`.
 
----
+## Napomena o distribuciji
 
-## Strategija repozitorija
+Preporuceni model rada:
 
-Preporučeni pristup:
+- ovaj repozitorij koristi se za razvoj izvornog koda
+- instalacijski repozitorij koristi se za objavu gotovih buildova i distribucijskih artefakata
 
-- ovaj repozitorij: izvorni kod i razvoj
-- instalacijski repozitorij: gotovi build i instalacijski artefakti
-
-Na taj način izvorni kod ostaje pregledan, manji i lakši za održavanje, dok je distribucija jasno odvojena.
+Takav pristup odrzava source repozitorij preglednim i prikladnim za razvoj, dok se build i distribucija drze odvojeno.

@@ -31,9 +31,87 @@ namespace Project
         {
             InitializeComponent();
             EnsureSessionStorage();
+            InitializeResponsiveTopBar();
 
             LoadStyleTemplates();
             UpdateSliderLabel();
+        }
+
+        private void InitializeResponsiveTopBar()
+        {
+            panelTop.Height = 104;
+            panelTop.Resize += (_, __) => UpdateTopBarLayout();
+            Resize += (_, __) => UpdateTopBarLayout();
+            Shown += (_, __) => BeginInvoke(new Action(UpdateTopBarLayout));
+            UpdateTopBarLayout();
+        }
+
+        private void UpdateTopBarLayout()
+        {
+            if (panelTop.ClientSize.Width <= 0)
+                return;
+
+            const int margin = 14;
+            const int preferredGap = 10;
+            const int compactGap = 6;
+            const int rowGap = 6;
+            const int topPadding = 10;
+            const int bottomPadding = 8;
+            const int minTrackWidth = 120;
+            const int maxTrackWidth = 220;
+            Button[] buttons =
+            {
+                btnAddStyle,
+                btnLoadInput,
+                btnReloadStyles,
+                btnPrimijeniStil,
+                btnSaveOutput,
+                btnClearOutput
+            };
+
+            panelTop.SuspendLayout();
+            lblTitle.Location = new Point(margin, topPadding);
+
+            int buttonRowY = lblTitle.Bottom + rowGap;
+            int rowHeight = Math.Max(btnLoadInput.Height, Math.Max(trackStyleStrength.Height, lblStyleStrength.Height));
+            int valueWidth = Math.Max(lblStyleStrengthValue.PreferredWidth, 36);
+            int labelWidth = lblStyleStrength.PreferredWidth;
+            int buttonWidths = 0;
+            foreach (var button in buttons)
+                buttonWidths += button.Width;
+
+            int gap = preferredGap;
+            int availableForTrack = panelTop.ClientSize.Width - (margin * 2) - buttonWidths - (gap * (buttons.Length + 2)) - labelWidth - valueWidth;
+            if (availableForTrack < minTrackWidth)
+            {
+                gap = compactGap;
+                availableForTrack = panelTop.ClientSize.Width - (margin * 2) - buttonWidths - (gap * (buttons.Length + 2)) - labelWidth - valueWidth;
+            }
+
+            int trackWidth = Math.Max(80, Math.Min(maxTrackWidth, availableForTrack));
+            int x = margin;
+            int buttonOffsetY = Math.Max(0, (rowHeight - btnLoadInput.Height) / 2);
+
+            foreach (var button in buttons)
+            {
+                button.Location = new Point(x, buttonRowY + buttonOffsetY);
+                x += button.Width + gap;
+            }
+
+            int labelY = buttonRowY + Math.Max(0, (rowHeight - lblStyleStrength.Height) / 2);
+            int trackY = buttonRowY + Math.Max(0, (rowHeight - trackStyleStrength.Height) / 2);
+            int valueY = buttonRowY + Math.Max(0, (rowHeight - lblStyleStrengthValue.Height) / 2);
+
+            lblStyleStrength.Location = new Point(x, labelY);
+            trackStyleStrength.Size = new Size(trackWidth, trackStyleStrength.Height);
+            trackStyleStrength.Location = new Point(lblStyleStrength.Right + gap, trackY);
+            lblStyleStrengthValue.Location = new Point(trackStyleStrength.Right + gap, valueY);
+
+            int neededHeight = buttonRowY + rowHeight + bottomPadding;
+            if (panelTop.Height != neededHeight)
+                panelTop.Height = neededHeight;
+
+            panelTop.ResumeLayout(true);
         }
 
         private static void EnsureSessionStorage()
@@ -269,6 +347,7 @@ namespace Project
         {
             double val = trackStyleStrength.Value / 100.0;
             lblStyleStrengthValue.Text = val.ToString("0.00", CultureInfo.InvariantCulture);
+            UpdateTopBarLayout();
         }
 
         // --------------------------------------------------------

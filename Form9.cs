@@ -75,8 +75,7 @@ namespace Project
             ToggleUi(false);
 
             string scriptDir = Path.GetDirectoryName(scriptPath)!;
-            string outputDir = Path.Combine(scriptDir, "outputs");
-            Directory.CreateDirectory(outputDir);
+            string outputDir = AppPaths.GetWritableWorkDirectory("BckgRemoval", "GrainScratch");
             outputImagePath = Path.Combine(outputDir, $"restored_{DateTime.Now:yyyyMMdd_HHmmss}.png");
 
             double denoise = trackDenoise.Value;

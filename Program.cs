@@ -8,9 +8,11 @@ namespace Project
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
+            // Force a 100% layout baseline and let Windows scale the final surface on high-DPI displays.
+            // This avoids DPI-specific control reflow issues on laptops set to 125%+ scaling.
+            Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             CrashLogger.Init();
             Application.Run(new MainMenuForm());
         }

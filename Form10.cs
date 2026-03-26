@@ -214,12 +214,11 @@ namespace Project
             }
 
             string scriptDir = Path.GetDirectoryName(scriptPath)!;
-            string outputDir = Path.Combine(scriptDir, "outputs");
-            Directory.CreateDirectory(outputDir);
+            string outputDir = AppPaths.GetWritableWorkDirectory("BckgRemoval", "ObjectRemoval");
             outputImagePath = Path.Combine(outputDir, $"object_removed_{DateTime.Now:yyyyMMdd_HHmmss}.png");
 
             // save temp mask
-            string tempMask = Path.Combine(Path.GetTempPath(), $"objmask_{Guid.NewGuid():N}.png");
+            string tempMask = Path.Combine(AppPaths.GetWritableWorkDirectory("BckgRemoval", "Masks"), $"objmask_{Guid.NewGuid():N}.png");
             maskImage.Save(tempMask);
 
             lblStatus.Text = "Pokrećem LaMa...";

@@ -81,5 +81,16 @@ namespace Project
 
             return string.Empty;
         }
+
+        internal static string GetWritableWorkDirectory(params string[] relativeParts)
+        {
+            string[] allParts = new[] { Path.GetTempPath(), "WindowsFormsApp" }
+                .Concat(relativeParts ?? Array.Empty<string>())
+                .ToArray();
+
+            string path = Path.Combine(allParts);
+            Directory.CreateDirectory(path);
+            return path;
+        }
     }
 }
